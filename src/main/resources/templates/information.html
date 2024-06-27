@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout1}"
+>
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+    <title>PTIT</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!----css3---->
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+
+
+    <!--google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+
+    <!--google material icon-->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
+    <style>
+        iframe{
+            margin-left: -300px;
+
+            display: block !important;
+        }
+        .translated-ltr{
+            margin-top: 0 !important;
+        }
+        .VIpgJd-ZVi9od-ORHb-OEVmcd {
+            /*top: 370px !important;*/
+            left: 250px !important;
+            /*width: 600px  !important;*/
+        }
+        #google_translate_element{
+            display: block;
+        }
+        .table-wrapper{
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Bóng mờ xung quanh */
+            margin: 10px auto;
+            width: 80%;
+        }
+        table {
+            width: 100%;
+        }
+        th, td {
+            text-align: left;
+            padding: 3px 20px;
+        }
+        th {
+            background-color: #ffffff;
+        }
+        .bottom-border {
+            border-bottom: 1px solid #e2d8d8; /* Màu và độ dày của border */
+        }
+    </style>
+</head>
+<body>
+
+<!--Body-->
+<section layout:fragment="body">
+
+    <div class="table-wrapper">
+        <table>
+            <tr class="bottom-border">
+                <th><h4>Thông tin tài khoản</h4></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th>Mã</th>
+                <th>[[${session.acc.getAccount_id()}]]</th>
+            </tr>
+            <tr>
+                <th>Họ và tên</th>
+                <th>[[${session.acc.getName()}]]</th>
+            </tr>
+
+            <tr>
+                <th>Email</th>
+                <th>[[${session.acc.getEmail()}]]</th>
+            </tr>
+            <tr>
+                <th>Nơi sinh</th>
+                <th>Hải Dương</th>
+            </tr>
+            <tr>
+                <th>Dân tộc</th>
+                <th></th>
+            </tr>
+            <tr  th:if="${session.acc.getRole() == 3}">
+                <th>Thêm userIdTelegram</th>
+                <th>
+                    <form role="form" method="post" style="" th:action="@{/updateUserIdTelegram}">
+                        <div style="display: flex">
+<!--                            <input  th:value="${session.acc.getUser_id_telegram()}" name="userIdTelegram" type="text" class="form-control" required>-->
+                            <input th:value="${session.acc.getUser_id_telegram()}"
+                                   th:if="${session.acc.getUser_id_telegram() != null}"
+                                   name="userIdTelegram"
+                                   type="text"
+                                   class="form-control"
+                                   required>
+
+                            <input th:if="${session.acc.getUser_id_telegram() == null}"
+                                   placeholder="Hãy cập nhật userIdTelegram"
+                                   name="userIdTelegram"
+                                   type="text"
+                                   class="form-control"
+                                   required>
+                            <input type="submit" class="btn btn-danger" value="Thêm">
+                        </div>
+                        <input style="display: none"  th:value="${session.acc.getAccount_id()}" name="accountId" type="text" class="form-control" required>
+                        <input style="display: none"  th:value="${session.acc.getUsername()}" name="username" type="text" class="form-control" required>
+                    </form>
+                </th>
+            </tr>
+            <tr>
+                <th><a href="/forget-password" style="color: blue">Đổi mật khẩu</a></th>
+                <th></th>
+            </tr>
+        </table>
+    </div>
+
+    <div class="table-wrapper"  th:if="${session.acc.getRole() == 3}">
+        <table>
+            <tr class="bottom-border">
+                <th><h4>Thông tin khóa học</h4></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th>Lớp</th>
+                <th>D21CQCN04-B</th>
+            </tr>
+            <tr>
+                <th>Ngành</th>
+                <th>Công nghệ thông tin</th>
+            </tr>
+            <tr>
+                <th>Khoa</th>
+                <th>Công nghệ thông tin</th>
+            </tr>
+            <tr>
+                <th>Bậc hệ đào tạo</th>
+                <th>ĐHCQ (4,5 năm)</th>
+            </tr>
+            <tr>
+                <th>Niên khóa</th>
+                <th>2021-2026</th>
+            </tr>
+
+        </table>
+    </div>
+
+    <div class="table-wrapper"  th:if="${session.acc.getRole() == 3}">
+        <table>
+            <tr class="bottom-border">
+                <th><h4>Cố vấn học tập</h4></th>
+                <th></th>
+            </tr>
+            <tr>
+                <th>Tài khoản</th>
+                <th>HT1006</th>
+            </tr>
+            <tr>
+                <th>Họ và tên</th>
+                <th>Nguyễn Thị Thanh Thủy</th>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <th>thuyntt@ptit.edu.vn</th>
+            </tr>
+
+        </table>
+    </div>
+</section>
+
+
+</body>
+</html>
+

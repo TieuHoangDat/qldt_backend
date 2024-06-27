@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout1}"
+>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--dương them-->
+<!--      dat them-->
+  <title>Course Manager</title>
+</head>
+<body>
+<!--Body-->
+<section layout:fragment="body">
+<!--    <input th:value="${file}" type="text" name="" id="">-->
+<!--    <input th:value="${list}">-->
+    <div th:each="o :${list}">
+        <div>[[${o.getAccount().getAccount_id()}]]</div>
+    </div>
+</section>
+</body>
+</html>
+

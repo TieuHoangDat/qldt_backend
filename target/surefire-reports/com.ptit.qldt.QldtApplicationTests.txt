@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.ptit.qldt.QldtApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 14.704 s - in com.ptit.qldt.QldtApplicationTests

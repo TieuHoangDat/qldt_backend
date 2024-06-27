@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout1}"
+>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<!--    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">-->
+<!--    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+<!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+<!--    <link rel="stylesheet" type="text/css" th:href="@{/css/manager.css}" />-->
+    <title>PTIT</title>
+</head>
+<body>
+
+<!--Body-->
+<section layout:fragment="body">
+    <div class="container">
+    <div class="table-responsive">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row" style="height: 40px">
+                    <div class="col-xs-4">
+                        <a th:href="@{/courses}" style="color: white">
+                            <h2>Quản lí môn học</h2>
+                        </a>
+
+                    </div>
+
+                    <div class="col-xs-4" style="position: absolute; right: 40%; ">
+                        <form class="form-inline" th:action="@{/search}" method="get">
+                            <input name="searchCourse" class="form-control mr-sm-2" type="text" placeholder="Nhập mã hoặc tên môn" aria-label="Search" >
+                            <button class="btn btn-outline-info my-2 my-sm-0" type="submit" style="background-color: #28a745">Tìm kiếm</button>
+                        </form>
+                    </div>
+
+                    <div class="col-xs-4" style="position: absolute ; right: 10px; top: 8px">
+
+                        <a href="#addEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Thêm môn học mới</span></a>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>Tên môn học</th>
+                    <th>Mã môn học</th>
+                    <th>Số tín chỉ</th>
+                    <th>
+                        Học kì
+<!--                        <p>[[${semester}]]</p>-->
+<!--                        <form method="post" action="filterBySemester" th:action="@{/filter}">-->
+                        <!--<a href="searchcourse?">Lọc</a>-->
+                            <select style="width: 60px" class="" onchange="window.location.href=this.value;">
+                                <option selected>[[${term}]]</option>
+                                <option th:each="i : ${#numbers.sequence(1, 6)}" th:value="@{/courses/term-{term}/(term=${i})}" th:text="${i}"></option>
+                                <option th:value="@{/courses}">Tất cả</option>
+                            </select>
+<!--                            <select id ="mySelect" name="semester" class="form-select" aria-label="Default select example" th:value="${semester}">-->
+<!--&lt;!&ndash;                                <option selected>[[${semester}]]</option>&ndash;&gt;-->
+<!--                                <option th:if="${semester == null}" selected>Tất cả</option>-->
+<!--                                <option th:if="${semester != null}" th:selected="selected" th:text="${semester}"></option>-->
+<!--                                <option >Tất cả</option>-->
+<!--                                <a><option name="semester" th:each="i : ${#numbers.sequence(1, 6)}" th:value="${i}"><a href="searchcourse?semester=${o}">[[${i}]]</a></option></a>-->
+<!--                            </select>-->
+<!--                            <button class="btn btn-light" type="submit"><i class="fa fa-filter" aria-hidden="true"></i></button>-->
+<!--                        </form>-->
+                    </th>
+                    <th>Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                    <tr th:each="o :${courses}">
+                        <td>
+
+                        </td>
+                        <td><a th:href="@{/groupByCourse/{courseId}(courseId=${o.id})}">[[${o.name}]]</a></td>
+                        <td>[[${o.id}]]</td>
+                        <td>[[${o.num_credit}]]</td>
+                        <td>[[${o.term}]]</td>
+                        <td>
+                            <a th:href="@{/courses/{courseId}/edit(courseId = ${o.id})}" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                            <a th:href="@{/courses/{courseId}/delete(courseId = ${o.id})}" class="delete" ><i  class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<!--Add Modal HTML hdh-->
+<div id="addEmployeeModal" class="modal fade in" style="display: none;padding-right: 15px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form role="form" method="post" th:action="@{/courses/new}" th:object="${course}">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thêm môn học</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên môn học</label>
+                        <input th:field="*{name}" type="text" class="form-control" name ="name" required >
+                    </div>
+                    <div class="form-group">
+                        <label>Mã hôn học</label>
+                        <input th:field="*{id}" type="text" class="form-control"  name ="id" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Số tín chỉ</label>
+                        <input value="" th:field="*{num_credit}" type="text" class="form-control" name="numberOfCredit" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Học kì</label>
+                        <input th:field="*{term}" value="" type="text" class="form-control" name  ="semester" required>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+                    <input type="submit" class="btn btn-success" value="Add">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div  id="deleteEmployeeModal" class="modal fade in" style="display: none;padding-right: 15px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="delete">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Course</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><a href="managercontrol?blockDelete=none">&times;</a></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete ${idDelete}</p>
+                    <p class="text-warning"><small>This action cannot be undone.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <a href="managercontrol?blockDelete=none" type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <a href="deletecourse?idDelete=${idDelete}&delete=1" type="submit" class="btn btn-danger">Delete</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Edit Modal HTML -->
+<div id="editEmployeeModal" class="modal fade in" style="display: none;padding-right: 15px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form role="form" method="post" th:action="@{/courses/{courseId}/edit(courseId=${course.id})}" th:object="${course}">
+                <div class="modal-header">
+                    <h4 class="modal-title">Chỉnh sửa</h4>
+                    <button  type="button" class="close" data-dismiss="modal" aria-hidden="true"><a href="managercontrol?blockEdit=none">&times;</a></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Tên môn học</label>
+                        <input value="${courseEdit.name}" type="text" class="form-control" name="nameEdit" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mã môn học</label>
+                        <input value="${courseEdit.id}" type="text" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Số tín chỉ</label>
+                        <input  value="${courseEdit.num_credit}" type="text" class="form-control" name="numberOfCreditEdit" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Học kì</label>
+                        <input value="${courseEdit.term}" type="text" class="form-control" name="semesterEdit"  required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="managercontrol?blockDelete=none" type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <input type="submit" class="btn btn-success" value="Add">
+                    <!--<a href="editcourse?idEdit=${courseEdit.id}&edit=1" type="submit" class="btn btn-info" value="Save">Submit</a>-->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Delete Modal HTML -->
+<div class="modal fade in" style="display: none;padding-right: 15px;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="delete">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Course</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><a href="managercontrol?blockDelete=none">&times;</a></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete ${idDelete}</p>
+                    <p class="text-warning"><small>This action cannot be undone.</small></p>
+                </div>
+                <div class="modal-footer">
+                    <a href="managercontrol?blockDelete=none" type="button" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <a href="deletecourse?idDelete=${idDelete}&delete=1" type="submit" class="btn btn-danger">Delete</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+    <div th:style="'display: ' + (${notaction} ? 'block' : 'none') + '; padding-right: 15px;'" class="modal" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Thông báo lỗi</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><a th:href="@{/courses}">&times;</a></button>
+                    </div>
+                    <div style="margin: 10px;">
+                        <p>Không xóa được môn học do đã có dữ liệu liên quan đến môn học đã được lưu</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a th:href="@{/courses}" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</a>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+</body>
+</html>
+
