@@ -16,17 +16,17 @@ public interface GroupService {
     List<GroupDto> getGroupsForCourse(String courseId);
 //    List<GroupDto> getGroupByTeacherId(int teacherId);
 
-    Group getGroupById(String groupId);
+    Group getGroupById(int groupId);
 
     Group saveGroup(Group group);
 
     List<AccountDto> getAccountByCourseId(String courseId);
 
-    GroupDto findGroupById(String groupId);
+    GroupDto findGroupById(int groupId);
 
     void updateGroup(GroupDto group);
 
-    void delete(String groupId);
+    void delete(int groupId);
 
     List<CourseRegistrationDto> readExcel(String filePath,String courseId);
 

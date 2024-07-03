@@ -1,11 +1,18 @@
 package com.ptit.qldt.controllers;
 
+import com.ptit.qldt.dtos.AccountDto;
+import com.ptit.qldt.dtos.CourseDto;
 import com.ptit.qldt.dtos.NotificationDto;
 import com.ptit.qldt.dtos.RegistrationDto;
 import com.ptit.qldt.models.Account;
+import com.ptit.qldt.models.Course;
+import com.ptit.qldt.models.ResponseListObject;
+import com.ptit.qldt.models.ResponseObject;
 import com.ptit.qldt.services.EmailService;
 import com.ptit.qldt.services.NotificationService;
 import com.ptit.qldt.services.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,10 +20,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api")
 public class AuthController {
     private UserService userService;
     private EmailService emailService;
@@ -26,6 +34,63 @@ public class AuthController {
         this.userService = userService;
         this.emailService = emailService;
         this.notificationService = notificationService;
+    }
+
+    @GetMapping("/users")
+    ResponseListObject listUser() {
+        List<AccountDto> li = userService.findAll();
+        return new ResponseListObject("ok", "Query user successfully", li);
+    }
+
+    @PostMapping("/users")
+    ResponseEntity<ResponseObject> saveUser(@RequestBody Account newAccount){
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Create account successfully", userService.saveUser(newAccount))
+        );
+    }
+
+    @PutMapping("/users/{userId}")
+    ResponseEntity<ResponseObject> updateUser(@PathVariable("userId") int userId, @RequestBody Account newAccount){
+        Account a = userService.findFirstByUsername(newAccount.getUsername());
+        newAccount.setPassword(a.getPassword());
+        newAccount.setAccount_id(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ResponseObject("ok", "Update user successfully", userService.saveUser(newAccount))
+        );
+    }
+
+    @DeleteMapping("/users/{userId}")
+    ResponseEntity<ResponseObject> deleteUser(@PathVariable("userId") int userId){
+        try {
+            userService.deleteUser(userId);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Delete user successfully", "")
+            );
+        }catch (Exception ex){
+            System.out.println("không xóa được");
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("false", "Không thể xóa user này", "")
+            );
+        }
+    }
+
+
+    @PostMapping("/login")
+    ResponseEntity<ResponseObject> login(@RequestBody Map<String, String> request) {
+        String username = request.get("username");
+        String password = request.get("password");
+
+        Account user = userService.findFirstByUsername(username);
+
+        if (user != null && user.getPassword().equals(password)) {
+            String token = user.generateAuthToken();
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Đăng nhập thành công", token)
+            );
+        }
+        return ResponseEntity.status(400).body(
+                new ResponseObject("ok", "Tải khoản hoặc mật khẩu không đúng", "")
+        );
     }
 
     @GetMapping("/register")
@@ -71,26 +136,7 @@ public class AuthController {
         return "information";
     }
 
-    @PostMapping("/login/check")
-    public String login(HttpSession session, @ModelAttribute("user")RegistrationDto acc) {
-        String username = acc.getUsername();
-        String password = acc.getPassword();
-        List<NotificationDto> allNotification = notificationService.findAllNotification();
-        for(NotificationDto x : allNotification){
-            System.out.println(x.getTitle());
-        }
 
-        Account user = userService.findFirstByUsername(username);
-
-        if (user != null && user.getPassword().equals(password)) {
-            session.setAttribute("acc", user);
-            session.setAttribute("allNotification",allNotification);
-            return "redirect:/home";
-        } else {
-
-            return "redirect:/login?fail";
-        }
-    }
     @GetMapping("/forget-password")
     public String forgetPasswordPage(Model model) {
         RegistrationDto user = new RegistrationDto();
@@ -155,19 +201,7 @@ public class AuthController {
             return "redirect:/reset-password?fail";
         }
     }
-    @PostMapping("/updateUserIdTelegram")
-    public String update(HttpSession session,
-                         @RequestParam(value = "userIdTelegram") String userIdTelegram,
-                         @RequestParam(value = "accountId") int accountId,
-                         @RequestParam(value = "username") String username){
-//        Object acc= session.getAttribute("acc");
-        userService.updateUserIdTelegram(accountId,userIdTelegram);
-        Account acc2 = userService.findByUsername(username);
-        System.out.println(acc2.getUser_id_telegram());
-        session.removeAttribute("acc");
-        session.setAttribute("acc",acc2);
-        return "redirect:/information";
-    }
+
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.removeAttribute("acc");

@@ -8,11 +8,13 @@ import java.util.List;
 
 public interface GroupRegistrationService {
 
+    List<GroupRegistration> getCRByIdAndTerm(int accountId, int id);
+
     List<GroupRegistrationDto> findgroupRegistration(int accountId);
 
-    void addGroupRegistration(int accountId, String groupId);
+    void addGroupRegistration(int accountId, int groupId);
 
-    void deleteGroupRegistration(int accountId, String groupId);
+    void deleteGroupRegistration(int id);
 
-    List<GroupRegistrationDto> findGroupByDayOfWeekAndTime(String dayOfWeek, String time);
+//    List<GroupRegistrationDto> findGroupByDayOfWeekAndTime(String dayOfWeek, String time);
 }

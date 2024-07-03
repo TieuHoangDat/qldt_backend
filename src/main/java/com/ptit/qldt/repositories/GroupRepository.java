@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import javax.transaction.Transactional;
 import java.util.List;
 
-public interface GroupRepository  extends JpaRepository<Group, String> {
+public interface GroupRepository  extends JpaRepository<Group, Integer> {
     @Query("SELECT g FROM Group g WHERE g.course IN :courses")
     List<Group> findGroupsByCourses(@Param("courses") List<Course> courses);
     @Query("SELECT g FROM Group g WHERE g.teacher.account_id = :accountId")
@@ -23,18 +23,18 @@ public interface GroupRepository  extends JpaRepository<Group, String> {
     @Modifying
     @Transactional
     @Query("UPDATE Group g SET g.availableSlots = g.availableSlots - 1 WHERE g.groupId = :groupId")
-    void decreaseAvailableSlots(@Param("groupId") String groupId);
+    void decreaseAvailableSlots(@Param("groupId") int groupId);
 
     @Modifying
     @Transactional
     @Query("UPDATE Group g SET g.availableSlots = g.availableSlots + 1 WHERE g.groupId = :groupId")
-    void increaseAvailableSlots(@Param("groupId") String groupId);
+    void increaseAvailableSlots(@Param("groupId") int groupId);
 
     @Query("SELECT g FROM Group g WHERE g.groupId = :groupId")
-    Group findGroupById(@Param("groupId") String groupId);
+    Group findGroupById(@Param("groupId") int groupId);
 
     @Query("SELECT a FROM Account a")
     List<Account> findAllAccount();
-    @Query("SELECT gr FROM Group gr WHERE gr.time LIKE %:dayOfWeek%")
-    List<Group> findByDayOfWeek(@Param("dayOfWeek") String dayOf);
+//    @Query("SELECT gr FROM Group gr WHERE gr.time LIKE %:dayOfWeek%")
+//    List<Group> findByDayOfWeek(@Param("dayOfWeek") String dayOf);
 }

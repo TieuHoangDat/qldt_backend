@@ -31,6 +31,9 @@ public class GroupRegistration {
     @Column(name = "time", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL")
     private LocalDateTime time;
 
+    @Column(columnDefinition = "FLOAT DEFAULT 0")
+    private double grade;
+
     public GroupRegistration() {
         this.time = LocalDateTime.now();
     }

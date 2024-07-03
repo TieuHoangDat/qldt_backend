@@ -7,9 +7,12 @@ import lombok.Data;
 @Builder
 public class AccountDto {
     private int account_id;
-    private String fullName, firstName, lastName;
+    private String name;
     private String username;
     private String email;
-    private String user_id_telegram;
+    private String gender;
+    private Integer date;
+    private Integer month;
+    private Integer year;
     private Integer role;
 }

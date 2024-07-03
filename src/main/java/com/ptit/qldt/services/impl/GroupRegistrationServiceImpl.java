@@ -22,6 +22,8 @@ import static com.ptit.qldt.mappers.GroupRegistrationMapper.mapToGroupRegistrati
 public class GroupRegistrationServiceImpl implements GroupRegistrationService {
     private GroupRegistrationRepository groupRegistrationRepository;
     private GroupRepository groupRepository;
+
+
     @Autowired
     public GroupRegistrationServiceImpl(GroupRegistrationRepository groupRegistrationRepository, GroupRepository groupRepository) {
         this.groupRegistrationRepository = groupRegistrationRepository;
@@ -29,14 +31,18 @@ public class GroupRegistrationServiceImpl implements GroupRegistrationService {
     }
 
     @Override
-    public List<GroupRegistrationDto> findgroupRegistration(int accountId) {
-        List<GroupRegistration> groupRegistrations = groupRegistrationRepository.findGroupRegistration(accountId);
-        return groupRegistrations.stream().map(groupRegistration -> mapToGroupRegistrationDto(groupRegistration)).collect(Collectors.toList());
-//        return null;
+    public List<GroupRegistration> getCRByIdAndTerm(int accountId, int id) {
+        return groupRegistrationRepository.findCRByIdAndTerm(accountId, id);
     }
 
     @Override
-    public void addGroupRegistration(int accountId, String groupId) {
+    public List<GroupRegistrationDto> findgroupRegistration(int accountId) {
+        List<GroupRegistration> groupRegistrations = groupRegistrationRepository.findGroupRegistration(accountId);
+        return groupRegistrations.stream().map(groupRegistration -> mapToGroupRegistrationDto(groupRegistration)).collect(Collectors.toList());
+    }
+
+    @Override
+    public void addGroupRegistration(int accountId, int groupId) {
         Account account = new Account();
         account.setAccount_id(accountId);
 
@@ -53,16 +59,12 @@ public class GroupRegistrationServiceImpl implements GroupRegistrationService {
     }
 
     @Override
-    public void deleteGroupRegistration(int accountId, String groupId) {
-        groupRegistrationRepository.deleteByAccountIdAndGroupId(accountId, groupId);
-        groupRepository.increaseAvailableSlots(groupId);
+    public void deleteGroupRegistration(int id) {
+        GroupRegistration gr = groupRegistrationRepository.findById(id).get();
+        groupRegistrationRepository.deleteById(id);
+        groupRepository.increaseAvailableSlots(gr.getGroup().getGroupId());
     }
 
-    @Override
-    public List<GroupRegistrationDto> findGroupByDayOfWeekAndTime(String dayOfWeek, String time) {
-        List<GroupRegistration> groupRegistrations = groupRegistrationRepository.findGroupRegistrationByDayOfWeekandTime(dayOfWeek,time);
-        return groupRegistrations.stream().map(groupRegistration -> mapToGroupRegistrationDto(groupRegistration)).collect(Collectors.toList());
-    }
 
 
 }

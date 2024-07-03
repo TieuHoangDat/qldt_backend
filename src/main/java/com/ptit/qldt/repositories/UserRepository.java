@@ -25,8 +25,5 @@ public interface UserRepository extends JpaRepository<Account, Integer> {
     @Query("UPDATE Account a SET a.otp = :otp WHERE a.account_id = :accountId")
     void updateOtp(int accountId, String otp);
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE Account a SET a.user_id_telegram = :userIdTelegram WHERE a.account_id = :accountId")
-    void updateUserIdTelegram(int accountId, String userIdTelegram);
+
 }

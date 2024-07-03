@@ -41,6 +41,7 @@ public class CourseController {
 
     @PutMapping("/courses/{courseId}")
     ResponseEntity<ResponseObject> updateCourse(@PathVariable("courseId") String courseId, @RequestBody Course newCourse){
+        newCourse.setId(courseId);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "Update course successfully", courseService.saveCourse(newCourse))
         );
@@ -56,7 +57,7 @@ public class CourseController {
         }catch (Exception ex){
             System.out.println("không xóa được");
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ResponseObject("false", "False", "")
+                    new ResponseObject("false", "Không thể xóa môn học này", "")
             );
         }
     }
@@ -92,39 +93,8 @@ public class CourseController {
         model.addAttribute("courseactive","active");
         return "course_manager";
     }
-    @GetMapping("/courses/new")
-    public String createCourse(Model model){
-        Course course = new Course();
-        model.addAttribute("course",course);
-        model.addAttribute("courseactive","active");
-        return "course_manager";
-    }
 
 
-
-
-
-
-
-    @GetMapping("/courses/{courseId}/delete")
-    public String deleteCourse(@PathVariable("courseId") String courseId,Model model){
-        try {
-            courseService.delete(courseId);
-            return "redirect:/courses";
-        }catch (Exception ex){
-            System.out.println("không xóa được");
-//            model.addAttribute("notaction","block");
-        }
-        Course course = new Course();
-        String a = "Tất cả";
-        List<CourseDto> courses = courseService.findAllCourse();
-        model.addAttribute("courses", courses);
-        model.addAttribute("course",course);
-        model.addAttribute("term", a);
-        model.addAttribute("notaction","block");
-        model.addAttribute("courseactive","active");
-        return "course_manager";
-    }
 
     @GetMapping("/search")
     public String listCourseSearch(@RequestParam(value = "searchCourse") String name , Model model){

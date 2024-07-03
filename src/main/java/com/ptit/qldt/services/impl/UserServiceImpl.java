@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.ptit.qldt.mappers.AccountMapper.mapToAccountDto;
@@ -39,13 +39,34 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Account saveUser(Account account) {
+        return userRepository.save(account);
+    }
+
+    @Override
     public Account findByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
     @Override
+    public List<AccountDto> findAll() {
+        List<Account> accounts = userRepository.findAll();
+        return accounts.stream().map(account -> mapToAccountDto(account)).collect(Collectors.toList());
+    }
+
+    @Override
     public Account findByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public Optional<Account> findById(int id) {
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public void deleteUser(int id) {
+        userRepository.deleteById(id);
     }
 
     @Override
@@ -69,8 +90,4 @@ public class UserServiceImpl implements UserService {
         userRepository.updatePasswordByAccountId(accountId, newPassword);
     }
 
-    @Override
-    public void updateUserIdTelegram(int accountId, String userIdTelegram) {
-        userRepository.updateUserIdTelegram(accountId,userIdTelegram);
-    }
 }

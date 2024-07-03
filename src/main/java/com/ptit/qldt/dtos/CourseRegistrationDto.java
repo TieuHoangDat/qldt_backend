@@ -2,6 +2,7 @@ package com.ptit.qldt.dtos;
 
 import com.ptit.qldt.models.Account;
 import com.ptit.qldt.models.Course;
+import com.ptit.qldt.models.Term;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,8 +16,7 @@ public class CourseRegistrationDto {
     private Long id;
     private Account account;
     private Course course;
-    private String term;
+    private Term term;
     private LocalDateTime registrationDate;
-    private double grade_10, grade_4;
-    private String grade_a;
+
 }

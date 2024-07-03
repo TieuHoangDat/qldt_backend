@@ -26,13 +26,13 @@ public class CourseRegistration {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    @Column(nullable = false)
-    private String term;
+    @ManyToOne
+    @JoinColumn(name = "term", nullable = false)
+    private Term term;
 
     @Column(name = "registration_date", columnDefinition = "DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL")
     private LocalDateTime registrationDate;
 
-    @Column(columnDefinition = "FLOAT DEFAULT 0")
-    private double grade;
+
 
 }

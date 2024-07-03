@@ -1,6 +1,7 @@
 package com.ptit.qldt.repositories;
 
 import com.ptit.qldt.models.Course;
+import com.ptit.qldt.models.CourseRegistration;
 import com.ptit.qldt.models.Group;
 import com.ptit.qldt.models.GroupRegistration;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,18 +17,21 @@ public interface GroupRegistrationRepository  extends JpaRepository<GroupRegistr
     @Query("SELECT gr FROM GroupRegistration gr WHERE gr.account.account_id = :accountId AND gr.group.course.term = 6")
     List<GroupRegistration> findGroupRegistration(@Param("accountId") int accountId);
 
-    @Query("SELECT gr.group FROM GroupRegistration gr WHERE gr.group.time LIKE %:dayOfWeek%")
-    List<Group> findByDayOfWeek(@Param("dayOfWeek") String dayOfWeek);
+//    @Query("SELECT gr.group FROM GroupRegistration gr WHERE gr.group.time LIKE %:dayOfWeek%")
+//    List<Group> findByDayOfWeek(@Param("dayOfWeek") String dayOfWeek);
 
-//    @Query("SELECT gr FROM GroupRegistration gr WHERE gr.account.account_id = :accountId AND gr.time")
+//    @Query("SELECT gr FROM GroupRegistration gr WHERE gr.account.account_id = :accountId AND gr.")
 //    List<GroupRegistration> findGroupRegistration(@Param("accountId") int accountId);
 
     @Modifying
     @Transactional
     @Query("DELETE FROM GroupRegistration gr WHERE gr.account.account_id = :accountId AND gr.group.groupId = :groupId")
-    void deleteByAccountIdAndGroupId(@Param("accountId") int accountId, @Param("groupId") String groupId);
+    void deleteByAccountIdAndGroupId(@Param("accountId") int accountId, @Param("groupId") int groupId);
 
-    @Query("SELECT gr FROM GroupRegistration gr WHERE gr.group.time LIKE %:dayOfWeek% AND gr.group.time LIKE %:time%")
-    List<GroupRegistration> findGroupRegistrationByDayOfWeekandTime(@Param("dayOfWeek") String dayOfWeek, @Param("time") String time);
+    @Query("SELECT gr FROM GroupRegistration gr WHERE gr.account.account_id = :accountId AND gr.group.term.id = :term")
+    List<GroupRegistration> findCRByIdAndTerm(int accountId, int term);
+
+//    @Query("SELECT gr FROM GroupRegistration gr WHERE gr.group.time LIKE %:dayOfWeek% AND gr.group.time LIKE %:time%")
+//    List<GroupRegistration> findGroupRegistrationByDayOfWeekandTime(@Param("dayOfWeek") String dayOfWeek, @Param("time") String time);
 
 }

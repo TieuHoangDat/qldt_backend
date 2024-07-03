@@ -64,7 +64,7 @@ public class GroupServiceImpl implements GroupService {
         return groups.stream().map(group -> mapToGroupDto(group)).collect(Collectors.toList());
     }
     @Override
-    public Group getGroupById(String groupId) {
+    public Group getGroupById(int groupId) {
         return groupRepository.findGroupById(groupId);
     }
 
@@ -79,7 +79,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public GroupDto findGroupById(String groupId) {
+    public GroupDto findGroupById(int groupId) {
         Group group = groupRepository.findById(groupId).get();
         return mapToGroupDto(group);
     }
@@ -91,7 +91,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void delete(String groupId) {
+    public void delete(int groupId) {
         groupRepository.deleteById(groupId);
     }
 

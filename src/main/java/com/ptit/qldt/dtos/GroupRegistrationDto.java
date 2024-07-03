@@ -12,4 +12,6 @@ public class GroupRegistrationDto {
     private Group group;
     private Account account;
     private LocalDateTime time;
+    private double grade_10, grade_4;
+    private String grade_a;
 }

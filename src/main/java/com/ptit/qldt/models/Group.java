@@ -15,8 +15,9 @@ import javax.persistence.Table;
 @Table(name = "`Groups`")
 public class Group {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_id")
-    private String groupId;
+    private int groupId;
 
     @Column(name = "group_name", nullable = false)
     private String groupName;
@@ -25,8 +26,11 @@ public class Group {
     @JoinColumn(name = "course_id", nullable = false)
     private Course course;
 
-    @Column(nullable = false)
-    private String time;
+    @Column(name = "day_of_week", nullable = false)
+    private int dayOfWeek;
+
+    @Column(name = "period", nullable = false)
+    private int period;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id", nullable = false)
@@ -40,4 +44,8 @@ public class Group {
 
     @Column(name = "available_slots", nullable = false)
     private int availableSlots;
+
+    @ManyToOne
+    @JoinColumn(name = "term", nullable = false)
+    private Term term;
 }

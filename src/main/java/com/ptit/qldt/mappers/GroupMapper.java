@@ -15,7 +15,9 @@ public class GroupMapper {
                 .availableSlots(group.getAvailableSlots())
                 .maxStudents(group.getMaxStudents())
                 .teacher(group.getTeacher())
-                .time(group.getTime())
+                .dayOfWeek(group.getDayOfWeek())
+                .period(group.getPeriod())
+                .term(group.getTerm())
                 .build();
         return groupDto;
     }
@@ -24,11 +26,15 @@ public class GroupMapper {
         Group group = Group.builder().groupId(groupDto.getGroupId())
                 .groupName(groupDto.getGroupName())
                 .course(groupDto.getCourse())
-                .time(groupDto.getTime())
+                .dayOfWeek(groupDto.getDayOfWeek())
+                .period(groupDto.getPeriod())
                 .teacher(groupDto.getTeacher())
                 .room(groupDto.getRoom())
                 .maxStudents(groupDto.getMaxStudents())
-                .availableSlots(groupDto.getAvailableSlots()).build();
+                .availableSlots(groupDto.getAvailableSlots())
+                .term(groupDto.getTerm())
+                .build();
+
         return group;
     }
 }
