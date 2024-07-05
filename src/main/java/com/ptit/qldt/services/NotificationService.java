@@ -13,7 +13,4 @@ public interface NotificationService {
 
     void deleteNotificationById(int notificationId);
 
-    NotificationDto findById(int notificationId);
-
-    void updateNotification(NotificationDto notificationDto);
 }

@@ -10,11 +10,6 @@ public interface CourseService {
     List<CourseDto> findCourseRegister(int accountId);
     Course saveCourse(Course course);
 
-    CourseDto findCourseById(String courseId);
-
     void delete(String courseId);
 
-    List<CourseDto> findCourseByName(String name);
-
-    List<CourseDto> findCourseBySemester(int semester);
 }

@@ -1,6 +1,4 @@
 package com.ptit.qldt.services;
-
-import com.ptit.qldt.dtos.GroupDto;
 import com.ptit.qldt.dtos.GroupRegistrationDto;
 import com.ptit.qldt.models.GroupRegistration;
 
@@ -8,7 +6,9 @@ import java.util.List;
 
 public interface GroupRegistrationService {
 
-    List<GroupRegistration> getCRByIdAndTerm(int accountId, int id);
+    List<GroupRegistration> getGRByIdAndTerm(int accountId, int id);
+
+    List<GroupRegistration> getGRByGroupId(int groupId);
 
     List<GroupRegistrationDto> findgroupRegistration(int accountId);
 
@@ -16,5 +16,6 @@ public interface GroupRegistrationService {
 
     void deleteGroupRegistration(int id);
 
-//    List<GroupRegistrationDto> findGroupByDayOfWeekAndTime(String dayOfWeek, String time);
+    void updateGroupRegistration(GroupRegistration gr);
+
 }

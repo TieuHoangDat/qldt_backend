@@ -65,37 +65,4 @@ public class HomeController {
         }
     }
 
-    @GetMapping("/home/{notificationId}/delete")
-    public String deleteNotification(@PathVariable int notificationId,Model model) {
-        notificationService.deleteNotificationById(notificationId);
-        model.addAttribute("homeactive","active");
-        return "redirect:/home";
-    }
-
-    @GetMapping("/home/{notificationId}/edit")
-    public String editNotification(Model model, @PathVariable int notificationId) {
-        List<NotificationDto> notifications = notificationService.findAllNotification();
-        model.addAttribute("notifications", notifications);
-        model.addAttribute("blockEdit", true);
-        NotificationDto notificationDto = notificationService.findById(notificationId);
-        model.addAttribute("notification", notificationDto);
-        model.addAttribute("homeactive","active");
-        return "home";
-    }
-
-    @GetMapping("/home/{notificationId}/detail")
-    public String showNotification(Model model, @PathVariable int notificationId) {
-        NotificationDto notificationDto = notificationService.findById(notificationId);
-        model.addAttribute("notification", notificationDto);
-        model.addAttribute("homeactive","active");
-        return "notification";
-    }
-
-    @PostMapping("/home/{notificationId}/edit")
-    public String updateNotification(Model model,@PathVariable int notificationId, @ModelAttribute("notification") NotificationDto notificationDto) {
-        notificationDto.setId(notificationId);
-        notificationService.updateNotification(notificationDto);
-        model.addAttribute("homeactive","active");
-        return "redirect:/home";
-    }
 }

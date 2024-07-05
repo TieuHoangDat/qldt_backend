@@ -6,12 +6,8 @@ import com.ptit.qldt.repositories.NotificationRepository;
 import com.ptit.qldt.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.ptit.qldt.mappers.NotificationMapper.mapToNotification;
 import static com.ptit.qldt.mappers.NotificationMapper.mapToNotificationDto;
 
 
@@ -41,16 +37,4 @@ public class NotificationServiceImpl implements NotificationService {
         notificationRepository.deleteById(notificationId);
     }
 
-    @Override
-    public NotificationDto findById(int notificationId) {
-        Notification notification = notificationRepository.findById(notificationId).get();
-        return mapToNotificationDto(notification);
-    }
-
-    @Override
-    public void updateNotification(NotificationDto notificationDto) {
-        Notification notification = mapToNotification(notificationDto);
-        notification.setCreatedAt(LocalDateTime.now());
-        notificationRepository.save(notification);
-    }
 }

@@ -6,7 +6,7 @@ import com.ptit.qldt.services.CourseRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 
 @Service
 public class CourseRegistrationServiceImpl implements CourseRegistrationService {
@@ -16,13 +16,5 @@ public class CourseRegistrationServiceImpl implements CourseRegistrationService 
         this.courseRegistrationRepository = courseRegistrationRepository;
     }
 
-    @Override
-    public List<String> getTermByStudentID(int id) {
-        return courseRegistrationRepository.findTermByAccountId(id);
-    }
 
-    @Override
-    public List<CourseRegistration> getCRByIdAndTerm(int id, String s) {
-        return courseRegistrationRepository.findCRByIdAndTerm(id, s);
-    }
 }

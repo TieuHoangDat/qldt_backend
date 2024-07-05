@@ -93,12 +93,6 @@ public class AuthController {
         );
     }
 
-    @GetMapping("/register")
-    public String getRegisterForm(Model model) {
-        RegistrationDto user = new RegistrationDto();
-        model.addAttribute("user", user);
-        return "register";
-    }
 
     @PostMapping("/register/save")
     public String register(@Valid @ModelAttribute("user")RegistrationDto user,
@@ -119,22 +113,7 @@ public class AuthController {
         return "redirect:/courses?success";
     }
 
-//    @GetMapping("/login")
-//    public String loginPage() {
-//        return "login";
-//    }
-    @GetMapping("/login")
-    public String loginPage(Model model) {
-        RegistrationDto user = new RegistrationDto();
-        model.addAttribute("user", user);
-        return "login";
-    }
 
-    @GetMapping("/information")
-    public String informationPage(Model model) {
-        model.addAttribute("infoactive","active");
-        return "information";
-    }
 
 
     @GetMapping("/forget-password")

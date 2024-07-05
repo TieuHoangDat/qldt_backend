@@ -1,6 +1,5 @@
 package com.ptit.qldt.services.impl;
 
-import com.ptit.qldt.dtos.GroupDto;
 import com.ptit.qldt.dtos.GroupRegistrationDto;
 import com.ptit.qldt.models.Account;
 import com.ptit.qldt.models.Group;
@@ -10,12 +9,8 @@ import com.ptit.qldt.repositories.GroupRepository;
 import com.ptit.qldt.services.GroupRegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static com.ptit.qldt.mappers.GroupMapper.mapToGroupDto;
 import static com.ptit.qldt.mappers.GroupRegistrationMapper.mapToGroupRegistrationDto;
 
 @Service
@@ -31,8 +26,13 @@ public class GroupRegistrationServiceImpl implements GroupRegistrationService {
     }
 
     @Override
-    public List<GroupRegistration> getCRByIdAndTerm(int accountId, int id) {
-        return groupRegistrationRepository.findCRByIdAndTerm(accountId, id);
+    public List<GroupRegistration> getGRByIdAndTerm(int accountId, int id) {
+        return groupRegistrationRepository.findGRByIdAndTerm(accountId, id);
+    }
+
+    @Override
+    public List<GroupRegistration> getGRByGroupId(int groupId) {
+        return groupRegistrationRepository.findGRByGroupId(groupId);
     }
 
     @Override
@@ -65,6 +65,10 @@ public class GroupRegistrationServiceImpl implements GroupRegistrationService {
         groupRepository.increaseAvailableSlots(gr.getGroup().getGroupId());
     }
 
+    @Override
+    public void updateGroupRegistration(GroupRegistration gr) {
+        groupRegistrationRepository.save(gr);
+    }
 
 
 }

@@ -9,11 +9,7 @@ import com.ptit.qldt.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpSession;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -52,7 +48,7 @@ public class GroupRegistrationController {
         for(Term term : li) {
             if (term.getId() == 6) continue;
             String name = term.getName();
-            List<GroupRegistration> tmp = groupRegistrationService.getCRByIdAndTerm(id, term.getId());
+            List<GroupRegistration> tmp = groupRegistrationService.getGRByIdAndTerm(id, term.getId());
             TermDto t = new TermDto(name, tmp.stream().map(x -> mapToGroupRegistrationDto(x)).collect(Collectors.toList()));
 
             listTerm.add(t);
@@ -76,21 +72,21 @@ public class GroupRegistrationController {
     }
 
 
-    @GetMapping("/courseRegistration/{id}")
-    ResponseListObject listCoursesRegistration(@PathVariable("id") int id) {
+    @GetMapping("/courseRegistration/{accountId}")
+    ResponseListObject listCoursesRegistration(@PathVariable("accountId") int id) {
         List<CourseDto> li = courseService.findCourseRegister(id);
         return new ResponseListObject("ok", "Query course successfully", li);
     }
 
-    @GetMapping("/groupRegistration/{id}")
-    ResponseListObject listGroupsRegistration(@PathVariable("id") int id) {
+    @GetMapping("/groupRegistration/{accountId}")
+    ResponseListObject listGroupsRegistration(@PathVariable("accountId") int id) {
         List<GroupRegistrationDto> li = groupRegistrationService.findgroupRegistration(id);
         return new ResponseListObject("ok", "Query GR successfully", li);
     }
 
 
-    @GetMapping("/groupRegistration/groups/{id}")
-    ResponseListObject listGroups(@PathVariable("id") int id) {
+    @GetMapping("/groupRegistration/groups/{accountId}")
+    ResponseListObject listGroups(@PathVariable("accountId") int id) {
         List<GroupDto> groups = groupService.findAllGroupInCourseRegistration(id);
         List<GroupRegistrationDto> groupRegistrations = groupRegistrationService.findgroupRegistration(id);
         for(GroupDto g : groups) {
@@ -106,8 +102,8 @@ public class GroupRegistrationController {
         return new ResponseListObject("ok", "Query group successfully", groups);
     }
 
-    @GetMapping("/groupRegistration/groups/{id}/{courseId}")
-    ResponseListObject listGroupsByCourse(@PathVariable("id") int id, @PathVariable("courseId") String courseId) {
+    @GetMapping("/groupRegistration/groups/{accountId}/{courseId}")
+    ResponseListObject listGroupsByCourse(@PathVariable("accountId") int id, @PathVariable("courseId") String courseId) {
         List<GroupDto> groups = groupService.getGroupsForCourse(courseId);
         List<GroupRegistrationDto> groupRegistrations = groupRegistrationService.findgroupRegistration(id);
         for(GroupDto g : groups) {
@@ -209,5 +205,25 @@ public class GroupRegistrationController {
     }
 
 
+    @GetMapping("/groupRegistrationByGroupId/{groupId}")
+    ResponseListObject listGRByGroupID(@PathVariable("groupId") int id) {
+        List<GroupRegistration> li = groupRegistrationService.getGRByGroupId(id);
+        return new ResponseListObject("ok", "Query GR successfully", li);
+    }
 
+    @PostMapping("/addGrade")
+    ResponseEntity<ResponseObject> saveGroup(@RequestBody List<GroupRegistration> ligr) {
+        try {
+            for(GroupRegistration gr : ligr) {
+                groupRegistrationService.updateGroupRegistration(gr);
+            }
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Thêm điểm thành công", "")
+            );
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ResponseObject("ok", "Có lỗi", "")
+            );
+        }
+    }
 }

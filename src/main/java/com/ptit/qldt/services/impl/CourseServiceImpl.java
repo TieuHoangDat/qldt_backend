@@ -9,9 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import static com.ptit.qldt.mappers.CourseMapper.mapToCourseDto;
-import static com.ptit.qldt.mappers.CourseMapper.mapToCourse;
+
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -39,29 +38,11 @@ public class CourseServiceImpl implements CourseService {
         return courseRepository.save(course);
     }
 
-    @Override
-    public CourseDto findCourseById(String courseId) {
-        Course course = courseRepository.findById(courseId).get();
-        return mapToCourseDto(course);
-    }
 
 
     @Override
     public void delete(String courseId) {
         courseRepository.deleteById(courseId);
     }
-
-    @Override
-    public List<CourseDto> findCourseByName(String name) {
-        List<Course> courses = courseRepository.findByName(name);
-        return courses.stream().map(course -> mapToCourseDto(course)).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<CourseDto> findCourseBySemester(int semester) {
-        List<Course> courses = courseRepository.findBySemester(semester);
-        return courses.stream().map(course -> mapToCourseDto(course)).collect(Collectors.toList());
-    }
-
 
 }

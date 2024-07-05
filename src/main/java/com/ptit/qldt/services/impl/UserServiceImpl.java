@@ -8,7 +8,6 @@ import com.ptit.qldt.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -75,7 +74,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<AccountDto> findStudentsByGroupId(String id) {
+    public List<AccountDto> findStudentsByGroupId(int id) {
         List<Account> accounts = userRepository.findStudentsByGroupId(id);
         return accounts.stream().map(account -> mapToAccountDto(account)).collect(Collectors.toList());
     }

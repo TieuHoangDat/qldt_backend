@@ -1,6 +1,5 @@
 package com.ptit.qldt.repositories;
 
-import com.ptit.qldt.models.Account;
 import com.ptit.qldt.models.Course;
 import com.ptit.qldt.models.Group;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -33,8 +32,5 @@ public interface GroupRepository  extends JpaRepository<Group, Integer> {
     @Query("SELECT g FROM Group g WHERE g.groupId = :groupId")
     Group findGroupById(@Param("groupId") int groupId);
 
-    @Query("SELECT a FROM Account a")
-    List<Account> findAllAccount();
-//    @Query("SELECT gr FROM Group gr WHERE gr.time LIKE %:dayOfWeek%")
-//    List<Group> findByDayOfWeek(@Param("dayOfWeek") String dayOf);
+
 }

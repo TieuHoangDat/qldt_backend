@@ -1,6 +1,5 @@
 package com.ptit.qldt.repositories;
 
-import com.ptit.qldt.dtos.AccountDto;
 import com.ptit.qldt.models.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,7 +14,7 @@ public interface UserRepository extends JpaRepository<Account, Integer> {
     Account findFirstByUsername(String username);
 
     @Query("SELECT gr.account FROM GroupRegistration gr WHERE gr.group.groupId = :groupId")
-    List<Account> findStudentsByGroupId(String groupId);
+    List<Account> findStudentsByGroupId(int groupId);
     @Modifying
     @Transactional
     @Query("UPDATE Account a SET a.password = :password WHERE a.account_id = :accountId")

@@ -24,7 +24,7 @@ public interface UserService {
 
     Account findFirstByUsername(String username);
 
-    List<AccountDto> findStudentsByGroupId(String id);
+    List<AccountDto> findStudentsByGroupId(int id);
 
     void updateOtp(int accountId, String otp);
 

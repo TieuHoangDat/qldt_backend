@@ -63,47 +63,4 @@ public class CourseController {
     }
 
 
-    @PostMapping("/filter")
-    public String filterCourseBySemester(Model model,@RequestParam(value = "semester") String semester){
-        Course course = new Course();
-        List<CourseDto> courses = new ArrayList<>();
-        if(semester.equals("Tất cả")){
-            courses = courseService.findAllCourse();
-        }else {
-            courses = courseService.findCourseBySemester(Integer.parseInt(semester));
-        }
-        model.addAttribute("semester" , semester);
-        model.addAttribute("courses", courses);
-        model.addAttribute("course",course);
-        model.addAttribute("courseactive","active");
-        return "course_manager";
-    }
-
-    @GetMapping("/courses/term-{term}")
-    public String filterCourse(@PathVariable("term") String term,Model model){
-        Course course = new Course();
-        List<CourseDto> courses = new ArrayList<>();
-        if(term.equals("Tất cả")){
-            courses = courseService.findAllCourse();
-        }else {
-            courses = courseService.findCourseBySemester(Integer.parseInt(term));
-        }
-        model.addAttribute("courses", courses);
-        model.addAttribute("course",course);
-        model.addAttribute("courseactive","active");
-        return "course_manager";
-    }
-
-
-
-    @GetMapping("/search")
-    public String listCourseSearch(@RequestParam(value = "searchCourse") String name , Model model){
-        List<CourseDto> courses = courseService.findCourseByName(name);
-        Course course = new Course();
-        model.addAttribute("courses",courses);
-        model.addAttribute("course",course);
-        model.addAttribute("courseactive","active");
-        return "course_manager";
-    }
-
 }
